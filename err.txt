@@ -1,0 +1,14 @@
+No command 'lss' found, did you mean:
+ Command 'ls' from package 'coreutils' (main)
+ Command 'les' from package 'atm-tools' (universe)
+ Command 'lsx' from package 'suckless-tools' (universe)
+ Command 'lsw' from package 'suckless-tools' (universe)
+ Command 'ass' from package 'irpas' (multiverse)
+ Command 'gss' from package 'libgss-dev' (universe)
+ Command 'lssu' from package 'nilfs-tools' (universe)
+ Command 'less' from package 'less' (main)
+ Command 'lvs' from package 'lvm2' (main)
+ Command 'lrs' from package 'lrslib' (universe)
+ Command 'lsh' from package 'lsh-client' (universe)
+ Command 'ss' from package 'iproute2' (main)
+lss: command not found

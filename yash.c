@@ -23,32 +23,53 @@ int split(char * str, char * delimiters, char ** tokens) {
 	return i;
 }
 
-int main() {
+int get_input(char * input) {
+	printf("#");
+	fgets(input, 1000, stdin);
+	size_t s_len = strlen(input);
+	input[s_len-1] = 0;			// remove \n from input
+	printf("string entered: %s\n", input);
+	return s_len;
+}
 
-	printf("Hello, world!\n");
+int parse_tokens(char ** tokens, int len_tokens) {
+	for (int i = 0; i < len_tokens; i++) {
+		if (strcmp(tokens[i], ">") == 0) {
 
-	int cpid = fork();
-	char *args[]= {"date", NULL};
-	if (cpid == 0) {
-		execvp(args[0],args);
-	} else {
-		wait(NULL);
+		} else if (strcmp(tokens[i], "<") == 0) {
+
+		} else if (strcmp(tokens[i], "2>") == 0) {
+
+		} else if (strcmp(tokens[i], "|") == 0) {
+
+		} else if (strcmp(tokens[i], "&") == 0) {
+			if (i != len_tokens - 1) {
+				printf("& found unexpectedly");
+			}
+		}
 	}
+}
 
+int main() {
+	int cpid1, cpid2;
 	char input[2000];
-	char * argv[10];
+	char * argv[100];
 	while (1) {
-		printf("#");
-		fgets(input, sizeof(input), stdin);
-		printf("string entered: %s", input);
+		int input_len = get_input(input);
 		int len = split(input, " ", argv);
 		printf("tokens found = %d\n", len);
+		// for (int j = 0; j < len; j++) {
+		// printf("%s\n", argv[j]);
+		// }
 		if (len > 0) {
-			cpid = fork();
-			if (cpid == 0) {
-				printf("child\n");
-				printf("execute %s", argv[0]);
-				execvp(argv[0], args);
+			cpid1 = fork();
+			if (cpid1 == 0) {
+				// printf("child process with args\n");
+				// for (int i = 0; i < len; i++) {
+				// 	printf("argv[%d] = %s\n", i, argv[i]);
+				// }
+				execvp(argv[0], argv);
+				// execvp(args[0], args);
 			} else {
 				wait(NULL);
 			}
