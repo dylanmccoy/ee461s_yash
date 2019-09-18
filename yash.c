@@ -310,10 +310,6 @@ int parse_tokens_and_run(char ** tokens, int len_tokens, char * input) {
 				printf("yash: syntax error near unexpected token 'newline'\n");
 				_errno = E_SYN_REDIR;
 				break;
-			} else if (!isalpha(tokens[i + 1][0]) && !isdigit(tokens[i + 1][0])) {
-					printf("syntax error, filename expected\n");
-					_errno = E_SYN_REDIR;
-					break;
 			} else {
 				*out = tokens[i + 1];
 				cmd = 0;
@@ -324,10 +320,6 @@ int parse_tokens_and_run(char ** tokens, int len_tokens, char * input) {
 				printf("yash: syntax error near unexpected token 'newline'\n");
 				_errno = E_SYN_REDIR;
 				break;
-			} else if (!isalpha(tokens[i + 1][0]) && !isdigit(tokens[i + 1][0])) {
-					printf("syntax error, filename expected\n");
-					_errno = E_SYN_REDIR;
-					break;
 			} else {
 				*in = tokens[i + 1];
 				cmd = 0;
