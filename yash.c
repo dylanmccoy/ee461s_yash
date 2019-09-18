@@ -23,18 +23,21 @@ static void sig_handler(int signo) {
 			break; 
 		case SIGTSTP:
 			printf("caught SIGTSTP\n");
-			break; 
+			break;
+		case SIGCHLD:
+			printf("caught SIGCHILD\n");
+			break;
 	}
 }
 
-void handler(int sig)
-{	
-  pid_t pid;
+// void handler(int sig)
+// {	
+//   pid_t pid;
 
-  pid = wait(NULL);
+//   pid = wait(NULL);
 
-  printf("Pid %d exited.\n", pid);
-}
+//   printf("Pid %d exited.\n", pid);
+// }
 // inputs
 // str - pointer to string to split
 // delimiters - string of char to split by
@@ -113,11 +116,11 @@ int run_cmds
     	}
 		if (cpid1 == 0) {		// code for child1
 			close(fd[0]);		// close in1 for child
-			// dup2(fd[1], 1);
+			dup2(fd[1], 1);
 			close(fd[1]);
 			_errno = file_redir(out1, in1, err1);
 			// sleep(10);
-			execvp(argv1[0], argv1);
+			exit(execvp(argv1[0], argv1));
 		} else {
 			// sleep(2);
 			if ((cpid2 = fork()) == -1) {
@@ -125,15 +128,17 @@ int run_cmds
 			}
 			if (cpid2 == 0) {	// code for child2
 				close(fd[1]);		// close out for child
-				// dup2(fd[0], 0);
+				dup2(fd[0], 0);
 				close(fd[0]);
 				_errno = file_redir(out2, in2, err2);
-				execvp(argv2[0], argv2);
+				exit(execvp(argv2[0], argv2));
 			} else {			// code for yash
+				close(fd[0]);
+				close(fd[1]);
 				// wait(NULL);
 				// printf("parent waiting");
 				// wait(NULL);
-				waitpid(cpid2, NULL, WUNTRACED | WNOHANG);
+				// waitpid(cpid2, NULL, WUNTRACED | WNOHANG);
 			}
 		}
 	} else {					// no need for pipe, only one cmd
@@ -284,7 +289,7 @@ int main() {
 	if (signal(SIGINT, sig_handler) == SIG_ERR) {
   		printf("\ncan't catch SIGINT\n");
 	}
-	if (signal(SIGCHLD, handler) == SIG_ERR) {
+	if (signal(SIGCHLD, sig_handler) == SIG_ERR) {
 		printf("\ncan't catch SIGCHLD\n");
 	}
 
